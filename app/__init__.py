@@ -1,0 +1,1 @@
+"""Clique de Doissin API."""
