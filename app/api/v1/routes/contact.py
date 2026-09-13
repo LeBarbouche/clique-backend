@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_db
+from app.api.deps import get_db, require_roles
 from app.models.contact import ContactMessage
+from app.models.user import User
 from app.schemas.contact import ContactCreate, ContactRead
 
 router = APIRouter()
@@ -21,7 +22,10 @@ def create_contact_message(
 
 
 @router.get("/messages", response_model=list[ContactRead])
-def list_contact_messages(db: Session = Depends(get_db)) -> list[ContactMessage]:
+def list_contact_messages(
+    db: Session = Depends(get_db),
+    _: User = Depends(require_roles("superadmin", "admin")),
+) -> list[ContactMessage]:
     return list(
         db.scalars(select(ContactMessage).order_by(ContactMessage.created_at.desc())).all()
     )

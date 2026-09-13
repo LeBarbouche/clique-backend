@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date as date_type, datetime
 
 from sqlalchemy import Boolean, Date, DateTime, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
@@ -11,7 +11,7 @@ class Event(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
-    date: Mapped[date] = mapped_column(Date, nullable=False, index=True)
+    date: Mapped[date_type] = mapped_column(Date, nullable=False, index=True)
     start_time: Mapped[str] = mapped_column(String(5), nullable=False)
     end_time: Mapped[str | None] = mapped_column(String(5))
     venue: Mapped[str] = mapped_column(String(255), nullable=False)

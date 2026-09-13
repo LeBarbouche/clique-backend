@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     profiles: ["tools"]
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@clique.local
+      PGADMIN_DEFAULT_EMAIL: admin@clique-doissin.fr
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"

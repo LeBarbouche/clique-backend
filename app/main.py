@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.routes import contact, events, gallery, members
+from app.api.v1.routes import auth, comments, contact, events, gallery, members, news
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -16,7 +16,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PATCH", "DELETE"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -31,6 +31,9 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(news.router, prefix="/api/v1/news", tags=["news"])
+app.include_router(comments.router, prefix="/api/v1/comments", tags=["comments"])
 app.include_router(events.router, prefix="/api/v1/events", tags=["events"])
 app.include_router(members.router, prefix="/api/v1/members", tags=["members"])
 app.include_router(gallery.router, prefix="/api/v1/gallery", tags=["gallery"])

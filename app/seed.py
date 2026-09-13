@@ -4,6 +4,9 @@ from sqlalchemy import select
 
 from app.db.session import SessionLocal
 from app.models import Event, GalleryPhoto, Member
+from app.api.deps import hash_password
+from app.models.user import User
+from app.models.news import NewsArticle
 
 
 def seed() -> None:
@@ -79,6 +82,32 @@ def seed() -> None:
                 year=2025,
                 place="Doissin",
             )
+        )
+        db.add(
+            User(
+                email="superadmin@clique-doissin.fr",
+                display_name="Super administrateur",
+                role="superadmin",
+                password_hash=hash_password("change-me-please"),
+            )
+        )
+        db.add_all(
+            [
+                NewsArticle(
+                    title="La nouvelle saison est lancée",
+                    slug="nouvelle-saison-2026",
+                    content="Les pupitres se retrouvent chaque semaine pour préparer une saison pleine de musique et de rencontres à Doissin.",
+                    image_url="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1200&q=85",
+                    published=True,
+                ),
+                NewsArticle(
+                    title="Une répétition ouverte à toutes et tous",
+                    slug="repetition-ouverte",
+                    content="Venez écouter, discuter ou découvrir nos instruments lors d'une répétition ouverte à la salle des associations.",
+                    image_url="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1200&q=85",
+                    published=True,
+                ),
+            ]
         )
         db.commit()
         print("Données de démonstration insérées.")
